@@ -43,7 +43,7 @@ class Tower {
 class Enemy {
   constructor() {
     this.x = 0;
-    this.y = 300;
+    this.y = canvas.height / 2;
     this.speed = 1;
     this.health = 100;
   }
