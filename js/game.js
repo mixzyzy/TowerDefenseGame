@@ -1,6 +1,7 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
+// Set canvas to fullscreen
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
@@ -44,7 +45,7 @@ class Enemy {
   constructor() {
     this.x = 0;
     this.y = canvas.height / 2;
-    this.speed = 1;
+    this.speed = 2; // Made faster for visibility
     this.health = 100;
   }
 
@@ -87,19 +88,27 @@ class Projectile {
   }
 }
 
+// Place tower where user clicks
 canvas.addEventListener('click', (e) => {
   const rect = canvas.getBoundingClientRect();
   towers.push(new Tower(e.clientX - rect.left, e.clientY - rect.top));
 });
 
+// Spawn enemies regularly
 function spawnEnemy() {
   enemies.push(new Enemy());
 }
 
+spawnEnemy(); // Immediately spawn one
 setInterval(spawnEnemy, 2000);
 
+// Game loop
 function animate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Debug square to confirm canvas works
+  // ctx.fillStyle = 'white';
+  // ctx.fillRect(10, 10, 30, 30);
 
   towers.forEach(t => {
     t.update();
@@ -120,9 +129,14 @@ function animate() {
   requestAnimationFrame(animate);
 }
 
+console.log("Game started");
 animate();
+
+// Handle window resize
 window.addEventListener('resize', () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
-});
 
+  // Recenter enemies on resize
+  enemies.forEach(e => e.y = canvas.height / 2);
+});
